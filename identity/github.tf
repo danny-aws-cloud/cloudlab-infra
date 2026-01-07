@@ -18,9 +18,9 @@ resource "aws_iam_openid_connect_provider" "github" {
   ]
 
   tags = {
-    Name       = "github-actions-oidc-provider"
-    ManagedBy  = "Terraform"
-    Purpose    = "Allows GitHub Actions workflows to authenticate in AWS using OIDC without static credentials"
+    Name      = "github-actions-oidc-provider"
+    ManagedBy = "Terraform"
+    Purpose   = "Allows GitHub Actions workflows to authenticate in AWS using OIDC without static credentials"
   }
 
 }
@@ -47,8 +47,8 @@ resource "aws_iam_role" "github_actions" {
         }
 
         Condition = {
-          "StringEquals": {
-            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+          "StringEquals" : {
+            "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com"
           },
           StringLike = {
             "token.actions.githubusercontent.com:sub" = "repo:danny-aws-cloud/cloudlab-infra:*"
@@ -59,9 +59,9 @@ resource "aws_iam_role" "github_actions" {
   })
 
   tags = {
-    Name       = "github-actions-terraform-role"
-    ManagedBy  = "Terraform"
-    Purpose    = "IAM role assumed by GitHub Actions CI/CD pipelines to manage AWS infrastructure via Terraform"
+    Name      = "github-actions-terraform-role"
+    ManagedBy = "Terraform"
+    Purpose   = "IAM role assumed by GitHub Actions CI/CD pipelines to manage AWS infrastructure via Terraform"
   }
 }
 
