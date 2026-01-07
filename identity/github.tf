@@ -47,6 +47,9 @@ resource "aws_iam_role" "github_actions" {
         }
 
         Condition = {
+          "StringEquals": {
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+          },
           StringLike = {
             "token.actions.githubusercontent.com:sub" = "repo:danny-aws-cloud/cloudlab-infra:*"
           }
