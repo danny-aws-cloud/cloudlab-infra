@@ -1,4 +1,3 @@
 provider "aws" {
-  region  = var.aws_region
-  profile = var.sso-profile
+  region = var.aws_region
 }

@@ -22,8 +22,3 @@ variable "admin_user_name" {
   type    = string
   default = "denys"
 }
-
-variable "sso-profile" {
-  type    = string
-  default = "cicd"
-}

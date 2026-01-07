@@ -7,6 +7,5 @@ terraform {
     region         = "eu-central-1"
     dynamodb_table = "cloudlab-terraform-locks"
     encrypt        = true
-    profile        = "cicd"
   }
 }
