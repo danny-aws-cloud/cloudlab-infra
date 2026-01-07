@@ -63,15 +63,6 @@ resource "aws_identitystore_group_membership" "cicd_member" {
 }
 
 # ─────────────────────────────────────────────
-# AWS Accounts
-# ─────────────────────────────────────────────
-locals {
-  accounts = {
-    cloudlab = var.accounts.main
-  }
-}
-
-# ─────────────────────────────────────────────
 # Permission Sets
 # ─────────────────────────────────────────────
 
@@ -93,7 +84,7 @@ resource "aws_ssoadmin_account_assignment" "admin_assign" {
   permission_set_arn = aws_ssoadmin_permission_set.admin.arn
   principal_id       = aws_identitystore_group.admin.group_id
   principal_type     = "GROUP"
-  target_id          = local.accounts.cloudlab
+  target_id          = var.accounts.main
   target_type        = "AWS_ACCOUNT"
 }
 
@@ -139,7 +130,7 @@ resource "aws_ssoadmin_account_assignment" "dev_assign" {
   permission_set_arn = aws_ssoadmin_permission_set.developer.arn
   principal_id       = aws_identitystore_group.developer.group_id
   principal_type     = "GROUP"
-  target_id          = local.accounts.cloudlab
+  target_id          = var.accounts.main
   target_type        = "AWS_ACCOUNT"
 }
 
@@ -173,6 +164,6 @@ resource "aws_ssoadmin_account_assignment" "cicd_assign" {
   permission_set_arn = aws_ssoadmin_permission_set.cicd.arn
   principal_id       = aws_identitystore_group.cicd.group_id
   principal_type     = "GROUP"
-  target_id          = local.accounts.cloudlab
+  target_id          = var.accounts.main
   target_type        = "AWS_ACCOUNT"
 }
