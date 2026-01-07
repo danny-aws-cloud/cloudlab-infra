@@ -28,16 +28,16 @@ resource "aws_identitystore_group" "cicd" {
 
 resource "aws_identitystore_user" "denys" {
   identity_store_id = local.identity_store_id
-  user_name         = "denys"
-  display_name      = "Denys"
+  user_name         = var.admin_user_name
+  display_name      = var.admin_user_name
 
   name {
-    given_name  = "Denys"
-    family_name = "CloudLab"
+    given_name  = var.admin_user_name
+    family_name = var.project_name
   }
 
   emails {
-    value   = "voznyukden23@gmail.com"
+    value   = var.admin_email
     type    = "work"
     primary = true
   }
@@ -67,7 +67,7 @@ resource "aws_identitystore_group_membership" "cicd_member" {
 # ─────────────────────────────────────────────
 locals {
   accounts = {
-    cloudlab = "889818959918"
+    cloudlab = var.accounts.main
   }
 }
 
