@@ -1,0 +1,55 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  id-token: write   # Required for OIDC
+  contents: read    # Required to checkout repository
+
+jobs:
+  terraform:
+    name: Terraform CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Install Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+
+      # Configure AWS credentials using OIDC
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::889818959918:role/github-actions
+          aws-region: eu-central-1
+
+      # Terraform format check
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+
+      # Terraform init
+      - name: Terraform init
+        run: terraform init
+
+      # Terraform plan
+      - name: Terraform plan
+        run: terraform plan
+
+      # Terraform apply (only on main branch)
+      - name: Terraform apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve

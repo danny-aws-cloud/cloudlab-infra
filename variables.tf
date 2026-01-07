@@ -11,7 +11,7 @@ variable "aws_region" {
 
 variable "accounts" {
   description = "AWS accounts map"
-  type = map(string)
+  type        = map(string)
 }
 
 variable "admin_email" {
@@ -19,11 +19,11 @@ variable "admin_email" {
 }
 
 variable "admin_user_name" {
-  type = string
+  type    = string
   default = "denys"
 }
 
 variable "sso-profile" {
-  type = string
+  type    = string
   default = "cicd"
 }
