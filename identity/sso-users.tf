@@ -37,7 +37,8 @@ resource "aws_identitystore_user" "denys" {
   }
 
   emails {
-    value   = var.admin_email
+    value = "voznyukden23@gmail.com"
+    #value   = var.admin_email
     type    = "work"
     primary = true
   }
