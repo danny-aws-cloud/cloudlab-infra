@@ -9,9 +9,9 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
-variable "accounts" {
-  description = "AWS accounts map"
-  type        = map(string)
+variable "main_account_id" {
+  description = "AWS main account"
+  type        = string
 }
 
 variable "admin_email" {

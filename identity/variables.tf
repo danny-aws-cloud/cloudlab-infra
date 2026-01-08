@@ -6,8 +6,8 @@ variable "admin_email" {
   type = string
 }
 
-variable "accounts" {
-  type = map(string)
+variable "main_account_id" {
+  type = string
 }
 
 variable "project_name" {
