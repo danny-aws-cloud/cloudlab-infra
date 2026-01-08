@@ -3,7 +3,7 @@ variable "admin_user_name" {
 }
 
 variable "admin_email" {
- type = string
+  type = string
 }
 
 variable "main_account_id" {
