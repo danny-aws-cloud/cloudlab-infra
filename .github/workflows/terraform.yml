@@ -46,8 +46,8 @@ jobs:
         run: terraform init
 
       # Terraform plan
-      - name: Terraform plan
-        run: terraform plan
+      - name: Terraform plan (debug)
+        run: terraform plan -input=false
 
       # Terraform apply (only on main branch)
       - name: Terraform apply
