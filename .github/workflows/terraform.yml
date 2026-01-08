@@ -45,12 +45,6 @@ jobs:
       - name: Terraform init
         run: terraform init
 
-      # debug
-      - name: Debug paths
-        run: |
-          pwd
-          ls -la
-
       # Terraform plan
       - name: Terraform plan
         run: terraform plan -input=false -var-file=terraform.tfvars
