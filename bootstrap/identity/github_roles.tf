@@ -48,12 +48,15 @@ resource "aws_iam_role" "github_actions" {
 ##############################
 
 resource "aws_iam_policy" "github_actions_terraform_backend" {
-  name        = "github-actions-terraform-backend"
-  description = "Permissions required for Terraform backend (S3 + DynamoDB) used by GitHub Actions"
+  name        = "github-actions-terraform-runtime"
+  description = "Permissions for Terraform runtime CI: backend access and ECR repository management"
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
+      #
+      # Terraform remote state (S3)
+      #
       {
         Sid    = "TerraformStateS3Access"
         Effect = "Allow"
@@ -68,6 +71,10 @@ resource "aws_iam_policy" "github_actions_terraform_backend" {
           "arn:aws:s3:::cloudlab-terraform-state-*/*"
         ]
       },
+
+      #
+      # Terraform state locking (DynamoDB)
+      #
       {
         Sid    = "TerraformStateLockDynamoDB"
         Effect = "Allow"
@@ -80,13 +87,34 @@ resource "aws_iam_policy" "github_actions_terraform_backend" {
         ]
         Resource = "arn:aws:dynamodb:*:*:table/cloudlab-terraform-locks"
       },
+
+      #
+      # Basic account introspection (required by Terraform)
+      #
       {
         Sid    = "TerraformAccountRead"
         Effect = "Allow"
         Action = [
-          "sts:GetCallerIdentity",
-          "iam:ListRoles",
-          "iam:ListPolicies"
+          "sts:GetCallerIdentity"
+        ]
+        Resource = "*"
+      },
+
+      #
+      # ECR repository management (Terraform runtime)
+      #
+      {
+        Sid    = "ECRRepositoryManagement"
+        Effect = "Allow"
+        Action = [
+          "ecr:CreateRepository",
+          "ecr:DescribeRepositories",
+          "ecr:DeleteRepository",
+          "ecr:PutLifecyclePolicy",
+          "ecr:GetLifecyclePolicy",
+          "ecr:TagResource",
+          "ecr:UntagResource",
+          "ecr:ListTagsForResource"
         ]
         Resource = "*"
       }
@@ -94,9 +122,9 @@ resource "aws_iam_policy" "github_actions_terraform_backend" {
   })
 
   tags = {
-    Name      = "github-actions-terraform-backend-policy"
+    Name      = "github-actions-terraform-runtime-policy"
     ManagedBy = "Terraform"
-    Purpose   = "Allows GitHub Actions to access Terraform remote state and locking resources"
+    Purpose   = "Allows Terraform CI to manage runtime infrastructure and ECR repositories"
   }
 }
 
