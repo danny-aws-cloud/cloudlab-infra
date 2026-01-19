@@ -6,7 +6,3 @@ module "identity" {
   main_account_id = var.main_account_id
   project_name    = var.project_name
 }
-
-module "ecr" {
-  source = "./storage/ecr"
-}

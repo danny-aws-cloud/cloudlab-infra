@@ -1,31 +1,4 @@
 ##############################################
-# GitHub Actions OIDC provider
-#
-# Registers GitHub as a trusted OIDC identity
-# provider in AWS. This allows GitHub Actions
-# workflows to authenticate in AWS without
-# static credentials.
-##############################################
-resource "aws_iam_openid_connect_provider" "github" {
-  url = "https://token.actions.githubusercontent.com"
-
-  client_id_list = [
-    "sts.amazonaws.com"
-  ]
-
-  thumbprint_list = [
-    "6938fd4d98bab03faadb97b34396831e3780aea1"
-  ]
-
-  tags = {
-    Name      = "github-actions-oidc-provider"
-    ManagedBy = "Terraform"
-    Purpose   = "Allows GitHub Actions workflows to authenticate in AWS using OIDC without static credentials"
-  }
-
-}
-
-##############################################
 # IAM role assumed by GitHub Actions via OIDC
 #
 # This role is used by CI/CD pipelines to
@@ -138,4 +111,3 @@ resource "aws_iam_role_policy_attachment" "github_actions_terraform_backend_atta
   role       = aws_iam_role.github_actions.name
   policy_arn = aws_iam_policy.github_actions_terraform_backend.arn
 }
-
